@@ -1,3 +1,6 @@
+[tool.black]
+line-length = 79
+
 [tool.poetry]
 name = "zero-shot-captcha-solver"
 version = "0.1.0"
