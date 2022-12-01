@@ -9,7 +9,19 @@ packages = [{include = "zero_shot_captcha_solver"}]
 
 [tool.poetry.dependencies]
 python = "^3.9"
+numpy = "^1.23.5"
+sentence-transformers = "^2.2.2"
+Pillow = "^9.3.0"
+ftfy = "^6.1.1"
 
+
+[tool.poetry.group.dev.dependencies]
+ipykernel = "^6.17.1"
+ipywidgets = "^8.0.2"
+pre-commit = "^2.20.0"
+mypy = "^0.991"
+black = "^22.10.0"
+flake8 = "^6.0.0"
 
 [build-system]
 requires = ["poetry-core"]
