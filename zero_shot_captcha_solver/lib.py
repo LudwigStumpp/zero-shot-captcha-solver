@@ -26,11 +26,14 @@ def split_img(raw_img, num_h, num_w) -> np.ndarray:
     )
 
 
-def solve_captcha(captcha_img: np.ndarray, text: str) -> np.ndarray:
+def solve_captcha(
+    captcha_img: np.ndarray, text: str, model=None
+) -> np.ndarray:
     imgs = split_img(captcha_img, num_h=3, num_w=3)
     imgs_flattened = imgs.reshape(-1, *imgs.shape[-3:])
 
-    model = sentence_transformers.SentenceTransformer("clip-ViT-B-32")
+    if model is None:
+        model = sentence_transformers.SentenceTransformer("clip-ViT-B-32")
 
     img_emb_arr = model.encode(
         [Image.fromarray(img) for img in imgs_flattened]
@@ -44,9 +47,13 @@ def solve_captcha(captcha_img: np.ndarray, text: str) -> np.ndarray:
 
 
 def solve_captcha_from_path(
-    path: str, text: Optional[str] = None
+    path: str, text: Optional[str] = None, model=None
 ) -> np.ndarray:
     if text is None:
         text = path.split(os.sep)[-1].split(".")[0]
     img = Image.open(path)
-    return solve_captcha(np.array(img), text)
+    return solve_captcha(np.array(img), text, model)
+
+
+def load_clip():
+    return sentence_transformers.SentenceTransformer("clip-ViT-B-32")

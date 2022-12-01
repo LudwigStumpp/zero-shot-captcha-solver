@@ -4,7 +4,13 @@ import os
 import streamlit as st
 from streamlit_image_select import image_select
 
-from zero_shot_captcha_solver import solve_captcha_from_path
+from zero_shot_captcha_solver import load_clip, solve_captcha_from_path
+
+
+@st.cache(allow_output_mutation=True)
+def load_model():
+    return load_clip()
+
 
 title = "Zero Shot Captcha Solver"
 
@@ -31,4 +37,5 @@ st.write("### Guess")
 if img is not None and st.button("Solve"):
     # show loading indicator
     with st.spinner("Solving captcha..."):
-        st.write(solve_captcha_from_path(img))
+        model = load_model()
+        st.write(solve_captcha_from_path(img, model=model))
