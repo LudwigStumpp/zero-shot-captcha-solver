@@ -1,6 +1,6 @@
 # zero-shot-captcha-solver
 
-A zero-shot captcha solver built on top of the multi-modal vision and language model[CLIP](https://arxiv.org/abs/2103.00020) and hosted in a [Streamlit application](https://zero-shot-captcha-solver.streamlit.app/). It is zero-shot as it does not require showing any labelled examples but works out of the box
+A zero-shot captcha solver built on top of the multi-modal vision and language model [CLIP](https://arxiv.org/abs/2103.00020) and hosted in a [Streamlit application](https://zero-shot-captcha-solver.streamlit.app/). It is zero-shot as it does not require showing any labelled examples but works out of the box
 for arbitrary captcha images.
 
 ## 1. Task Description
