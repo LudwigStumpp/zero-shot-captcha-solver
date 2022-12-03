@@ -54,7 +54,7 @@ def setup_solver(img_path: str):
 
     if img_path is not None:
         st.markdown(
-            "This will try to mark the images that contain the object"
+            "This will try to mark the images that contain the object "
             + f"'{img_path.split(os.sep)[-1].split('.')[0]}'."
         )
         if st.button("Solve"):
