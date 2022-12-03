@@ -3,7 +3,7 @@ line-length = 119
 
 [tool.poetry]
 name = "zero-shot-captcha-solver"
-version = "0.1.1"
+version = "0.1.2"
 description = ""
 authors = ["Ludwig Stumpp <42147848+LudwigStumpp@users.noreply.github.com>"]
 license = "MIT"
