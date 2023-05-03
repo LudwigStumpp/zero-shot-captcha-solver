@@ -34,17 +34,27 @@ Find a notebook that runs through the code at the example of one captcha image a
 
 ## 4. How to Install
 
-As this small project solely exists for educational reasons, the only way to install `zero-shot-captcha-solver` as a python library is to:
+There are two ways to install the required dependencies and run the code locally:
 
-1. Install poetry onto your system
-2. Clone the repository
+### 4.1 With poetry
+
+This will install `zero-shot-captcha-solver` as a library within the virtual poetry environment.
+
+1. Clone the repository
+2. Install poetry
 3. From the root of the repository, install `zero-shot-captcha-solver` by executing `poetry install`
+
+### 4.2 Without poetry
+
+This won't install `zero-shot-captcha-solver` as a library.
+
+1. Clone the repository
+2. Install the (dev) requirements with `pip install -r requirements(-dev).txt`
 
 ## 5. Special Thanks
 
 Special thanks to:
 
-- [Nils Reimers](https://www.nils-reimers.de/) and the maintainers of the [sentence-transformers](https://www.sbert.net/) library.
 - The whole [Streamlit](https://streamlit.io/) team for allowing to host streamlit applications for free on their infrastructures.
 
 ## 6. License
