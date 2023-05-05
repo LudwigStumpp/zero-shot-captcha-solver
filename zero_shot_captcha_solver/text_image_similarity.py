@@ -27,6 +27,17 @@ class CLIPTextImageSimilarityModel:
         self.processor = transformers.CLIPProcessor.from_pretrained(model_name)
 
     def __call__(self, texts: list[str], images: list[np.ndarray]) -> np.ndarray:
+        """Computes the similarity between texts and images.
+
+        Args:
+            texts (List[str]): List of texts.
+            images (List[np.ndarray]): List of images. Each image is a numpy array of shape (H, W, C).
+
+        Returns:
+            np.ndarray: Array of similarity scores of shape (text, image).
+                For example similarity_scores[0, 1] is the similarity score between texts[0] and images[1].
+        """
+
         inputs = self.processor(text=texts, images=images, return_tensors="pt")
         outputs = self.model(**inputs)
         return outputs.logits_per_text.detach().cpu().numpy()
