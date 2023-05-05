@@ -1,15 +1,21 @@
 import glob
 import os
 
+import numpy as np
 import streamlit as st
+from PIL import Image
 from streamlit_image_select import image_select
 
-from zero_shot_captcha_solver import load_clip, solve_captcha_from_path
+from zero_shot_captcha_solver import (
+    CaptchaImage,
+    CLIPTextImageSimilarityModel,
+    solve_captcha,
+)
 
 
-@st.cache(allow_output_mutation=True)
+@st.cache_resource()
 def load_model():
-    return load_clip()
+    return CLIPTextImageSimilarityModel()
 
 
 def setup_basic():
@@ -57,10 +63,25 @@ def setup_solver(img_path: str):
             "This will try to mark the images that contain the object "
             + f"'{img_path.split(os.sep)[-1].split('.')[0]}'."
         )
+
         if st.button("Solve"):
             with st.spinner("Solving captcha..."):
                 model = load_model()
-                st.write(solve_captcha_from_path(img_path, model=model))
+
+                img = Image.open(img_path)
+                target_object = img_path.split(os.sep)[-1].split(".")[0]
+
+                result = solve_captcha(
+                    CaptchaImage.from_image_grid(
+                        grid_img=np.asarray(img),
+                        target_object=target_object,
+                        num_rows=3,
+                        num_cols=3,
+                    ),
+                    model=model,
+                )  # shape (3, 3)
+
+                st.write(result)
 
 
 def setup_footer():

@@ -3,39 +3,62 @@ Collection of functions to compute the similarity between texts and images.
 Used to find images inside the captcha that contain the object of interest.
 """
 
+from typing import Protocol
+
 import numpy as np
 import transformers
 
-MODEL_NAME = "openai/clip-vit-base-patch32"
 
+class CLIPTextImageSimilarityModel:
+    """Pretrained CLIP model to compute the similarity between texts and images.
 
-def load_clip() -> transformers.CLIPModel:
-    """Loads the pretrained CLIP model.
+    Args:
+        model_name (str, optional): Pretrained model name. Defaults to "openai/clip-vit-base-patch32".
 
-    Returns:
-        CLIPModel: CLIP model
+    Attributes:
+        model_name (str): Pretrained model name.
+        model (transformers.CLIPModel): CLIP model.
+        processor (transformers.CLIPProcessor): CLIP processor.
     """
-    return transformers.CLIPModel.from_pretrained(MODEL_NAME)
+
+    def __init__(self, model_name: str = "openai/clip-vit-base-patch32"):
+        self.model_name = model_name
+        self.model = self.load_clip(model_name)
+        self.processor = transformers.CLIPProcessor.from_pretrained(model_name)
+
+    def __call__(self, texts: list[str], images: list[np.ndarray]) -> np.ndarray:
+        inputs = self.processor(text=texts, images=images, return_tensors="pt")
+        outputs = self.model(**inputs)
+        return outputs.logits_per_text.detach().cpu().numpy()
+
+    @staticmethod
+    def load_clip(model_name: str) -> transformers.CLIPModel:
+        """Loads the pretrained CLIP model.
+
+        Returns:
+            CLIPModel: CLIP model
+        """
+        return transformers.CLIPModel.from_pretrained(model_name)
+
+
+class TextImageSimilarityModel(Protocol):
+    def __call__(self, texts: list[str], images: list[np.ndarray]) -> np.ndarray:
+        ...
 
 
 def compute_texts_images_similarity(
-    texts: list[str], images: list[np.ndarray], clip_model: transformers.CLIPModel | None = None
+    texts: list[str], images: list[np.ndarray], text_image_similarity_model: TextImageSimilarityModel
 ) -> np.ndarray:
-    """Computes the similarity between texts and images using CLIP.
+    """Computes the similarity between texts and images using a text-image similarity model (e.g. CLIP).
 
     Args:
         texts (List[str]): List of texts.
         images (List[np.ndarray]): List of images. Each image is a numpy array of shape (H, W, C).
-        clip_model (transformers.CLIPModel | None, optional): Pretrained CLIP model. Defaults to None.
-            If not specified, will load the default model.
+        text_image_similarity_model (TextImageSimilarityModel): Model that computes the similarity between texts and
+            images.
 
     Returns:
         np.ndarray: Array of similarity scores of shape (text, image).
             For example similarity_scores[0, 1] is the similarity score between texts[0] and images[1].
     """
-    if clip_model is None:
-        clip_model = load_clip()
-    processor = transformers.CLIPProcessor.from_pretrained(MODEL_NAME)
-    inputs = processor(text=texts, images=images, return_tensors="pt")
-    outputs = clip_model(**inputs)
-    return outputs.logits_per_text.detach().cpu().numpy()  # shape (text, image)
+    return text_image_similarity_model(texts, images)

@@ -3,7 +3,7 @@ line-length = 119
 
 [tool.poetry]
 name = "zero-shot-captcha-solver"
-version = "0.1.2"
+version = "0.1.3"
 description = ""
 authors = ["Ludwig Stumpp <42147848+LudwigStumpp@users.noreply.github.com>"]
 license = "MIT"
@@ -17,6 +17,7 @@ Pillow = "^9.3.0"
 streamlit-image-select = "^0.5.1"
 transformers = "^4.28.1"
 torch = "^2.0.0"
+streamlit = "^1.22.0"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -26,7 +27,6 @@ pre-commit = "^2.20.0"
 mypy = "^0.991"
 black = "^22.10.0"
 flake8 = "^6.0.0"
-streamlit = "^1.15.2"
 isort = "^5.12.0"
 
 [build-system]
