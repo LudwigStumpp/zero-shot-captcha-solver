@@ -15,7 +15,7 @@ python = "^3.10"
 numpy = "^1.23.5"
 Pillow = "^9.3.0"
 streamlit-image-select = "^0.5.1"
-transformers = "^4.28.1"
+transformers = "^4.36.0"
 torch = "^2.0.0"
 streamlit = "^1.22.0"
 
